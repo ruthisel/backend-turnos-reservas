@@ -1,6 +1,12 @@
 import app from './app.js';
 import { envConfig } from './config/env.config.js';
+import { connectDB } from './config/database.config.js';
 
-app.listen(envConfig.port, () => {
-    console.log(`Servidor corriendo en http://localhost:${envConfig.port} (Modo: ${envConfig.nodeEnv})`);
-});
+const startServer = async () => {
+    await connectDB();
+    app.listen(envConfig.port, () => {
+        console.log(`Servidor corriendo en http://localhost:${envConfig.port} (Modo: ${envConfig.nodeEnv})`);
+    });
+};
+
+startServer();
