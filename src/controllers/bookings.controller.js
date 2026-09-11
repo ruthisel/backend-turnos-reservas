@@ -1,10 +1,10 @@
-import { BookingManager } from '../managers/BookingManager.js';
+import { BookingsService } from '../services/bookings.service.js';
 
-const bookingManager = new BookingManager();
+const bookingsService = new BookingsService();
 
 export const createBooking = async (req, res) => {
     try {
-        const newBooking = await bookingManager.createBooking(req.body);
+        const newBooking = await bookingsService.createBooking(req.body);
 
         if (!newBooking) {
             return res.status(400).json({
@@ -22,7 +22,7 @@ export const createBooking = async (req, res) => {
 export const getBookingById = async (req, res) => {
     try {
         const { bid } = req.params;
-        const booking = await bookingManager.getBookingById(bid);
+        const booking = await bookingsService.getBookingById(bid);
 
         if (!booking) {
             return res.status(404).json({ status: 'error', message: 'Reserva no encontrada' });
@@ -37,7 +37,7 @@ export const getBookingById = async (req, res) => {
 export const addServiceToBooking = async (req, res) => {
     try {
         const { bid, sid } = req.params;
-        const result = await bookingManager.addServiceToBooking(bid, sid);
+        const result = await bookingsService.addServiceToBooking(bid, sid);
 
         if (result.error === 'BOOKING_NOT_FOUND') {
             return res.status(404).json({ status: 'error', message: 'Reserva no encontrada' });

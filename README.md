@@ -1,7 +1,7 @@
 # Sistema Backend de Gestión de Turnos y Reservas
 ## Centro Interdisciplinario de Acompañamiento Integral
 
-API REST desarrollada con Node.js, Express y FileSystem para la gestión de servicios interdisciplinarios y reservas de turnos. Organizada bajo una arquitectura modular en 3 capas (Routes, Controllers y Managers).
+API REST desarrollada con Node.js, Express y FileSystem para la gestión de servicios interdisciplinarios y reservas de turnos. Implementa una arquitectura profesional en capas (Routes, Controllers, Services, Repositories y DAO).
 
 ---
 
@@ -16,33 +16,43 @@ API REST desarrollada con Node.js, Express y FileSystem para la gestión de serv
 
 ---
 
-##Arquitectura y Estructura del Proyecto
+##  Arquitectura en Capas
 
-El proyecto implementa una separación de responsabilidades clara:
-1. Routes: Definen únicamente los endpoints HTTP y derivan la petición al controlador.
-2. Controllers: Gestionan la solicitud (`req`), llaman al manager correspondiente y devuelven la respuesta HTTP (`res`).
-3. Managers: Contienen la lógica de datos y la persistencia en archivos JSON sin acceso a objetos HTTP.
+Flujo de la aplicación:
+`Router -> Controller -> Service -> Repository -> DAO -> Archivo JSON`
 
+* Routes: Definen endpoints y se conectan con los controladores.
+* Controllers: Reciben peticiones HTTP (`req`), invocan servicios y responden (`res`).
+*   Services: Contienen las reglas de negocio (ej. validaciones e incremento de `quantity`).
+* Repositories: Abstraen el acceso a datos independizando la lógica de negocio.
+* DAO (Data Access Object): Lee y escribe directamente en los archivos JSON.
 
+```text
 proyecto_backend_uno/
 ├── src/
 │   ├── config/
-│   │   └── env.config.js          # Configuración de variables de entorno (Fail-Fast)
+│   │   └── env.config.js          # Variables de entorno
 │   ├── controllers/
-│   │   ├── services.controller.js # Controlador del recurso Servicios
-│   │   └── bookings.controller.js # Controlador del recurso Reservas
-│   ├── data/
-│   │   ├── services.json          # Persistencia de servicios
-│   │   └── bookings.json          # Persistencia de reservas
-│   ├── managers/
-│   │   ├── ServiceManager.js      # Lógica de datos de servicios
-│   │   └── BookingManager.js      # Lógica de datos de reservas
+│   │   ├── services.controller.js # Controlador de servicios
+│   │   └── bookings.controller.js # Controlador de reservas
+│   ├── services/
+│   │   ├── services.service.js    # Lógica de negocio de servicios
+│   │   └── bookings.service.js    # Lógica de negocio de reservas
+│   ├── repositories/
+│   │   ├── services.repository.js # Abstracción de datos de servicios
+│   │   └── bookings.repository.js # Abstracción de datos de reservas
+│   ├── dao/
+│   │   ├── services.dao.js        # Persistencia FileSystem servicios
+│   │   └── bookings.dao.js        # Persistencia FileSystem reservas
 │   ├── routes/
-│   │   ├── services.router.js     # Enrutador de servicios
-│   │   └── bookings.router.js     # Enrutador de reservas
-│   ├── app.js                     # Instancia y configuración de Express
-│   └── server.js                  # Punto de entrada y arranque del servidor
-├── .env.example                   # Plantilla de variables de entorno
-├── .gitignore                     # Archivos ignorados por Git
-├── package.json                   # Dependencias y scripts
-└── README.md                      # Documentación del proyecto
+│   │   ├── services.router.js     # Rutas de servicios
+│   │   └── bookings.router.js     # Rutas de reservas
+│   ├── data/
+│   │   ├── services.json          # Archivo JSON de servicios
+│   │   └── bookings.json          # Archivo JSON de reservas
+│   ├── app.js                     # Configuración Express
+│   └── server.js                  # Inicialización del servidor
+├── .env.example
+├── .gitignore
+├── package.json
+└── README.md
