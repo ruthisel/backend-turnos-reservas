@@ -19,4 +19,4 @@ API REST profesional con MongoDB Atlas, Handlebars, Socket.io, Paginación y Val
 ---
 
 ##  Validaciones (Zod)
-Todos los datos de entrada son procesados por middlewares de Zod cortando el flujo con respuesta `400 Bad Request` ante datos inválidos antes de impactar la base de datos.
+Todos los datos de entrada son procesados por middlewares de Zod cortando el flujo con respuesta `400 Bad Request` ante datos inválidos antes de impactar la base de datos.  c
