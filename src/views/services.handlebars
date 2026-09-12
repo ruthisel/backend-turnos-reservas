@@ -1,0 +1,30 @@
+<h2>Gestión de Servicios en Tiempo Real</h2>
+
+<section class="form-container">
+    <h3>Agregar Nuevo Servicio</h3>
+    <form id="createServiceForm">
+        <input type="text" id="name" placeholder="Nombre del servicio" required />
+        <input type="text" id="description" placeholder="Descripción" required />
+        <input type="number" id="duration" placeholder="Duración (min)" required />
+        <input type="number" id="price" placeholder="Precio ($)" required />
+        <input type="text" id="category" placeholder="Categoría" required />
+        <button type="submit">Crear Servicio</button>
+    </form>
+</section>
+
+<hr />
+
+<h3>Listado de Servicios</h3>
+<div id="servicesList" class="grid-container">
+    {{#each services}}
+    <div class="card" id="service-{{this._id}}">
+        <h4>{{this.name}}</h4>
+        <p><strong>Descripción:</strong> {{this.description}}</p>
+        <p><strong>Duración:</strong> {{this.duration}} min</p>
+        <p><strong>Precio:</strong> ${{this.price}}</p>
+        <p><strong>Categoría:</strong> {{this.category}}</p>
+        <p><strong>Estado:</strong> {{#if this.available}}<span class="badge-active">Disponible</span>{{else}}<span
+                class="badge-inactive">No disponible</span>{{/if}}</p>
+    </div>
+    {{/each}}
+</div>

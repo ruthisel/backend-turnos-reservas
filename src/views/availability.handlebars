@@ -1,0 +1,13 @@
+<h2>Disponibilidad y Reservas del Sistema</h2>
+
+<section class="grid-container">
+    {{#each bookings}}
+    <div class="card">
+        <h4>Reserva: {{this.clientName}}</h4>
+        <p><strong>Email:</strong> {{this.clientEmail}}</p>
+        <p><strong>Fecha:</strong> {{this.date}} - {{this.time}} hs</p>
+        <p><strong>Estado:</strong> <span class="badge-active">{{this.status}}</span></p>
+        <p><strong>Servicios asociados:</strong> {{this.services.length}}</p>
+    </div>
+    {{/each}}
+</section>
