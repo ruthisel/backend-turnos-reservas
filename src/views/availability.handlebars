@@ -1,13 +1,70 @@
 <h2>Disponibilidad y Reservas del Sistema</h2>
 
-<section class="grid-container">
+<section class="form-container">
+    <h3>Registrar Nueva Reserva</h3>
+    <form id="createBookingForm">
+        <input type="text" id="clientName" placeholder="Nombre del cliente" required />
+        <input type="email" id="clientEmail" placeholder="Correo electrónico" required />
+        <input type="date" id="date" required />
+        <input type="time" id="time" required />
+        <input type="text" id="serviceId" placeholder="ID del Servicio (ObjectId de Mongo)" required />
+        <button type="submit">Crear Reserva</button>
+    </form>
+</section>
+
+<hr />
+
+<h3>Listado de Reservas</h3>
+<div class="grid-container">
     {{#each bookings}}
     <div class="card">
         <h4>Reserva: {{this.clientName}}</h4>
         <p><strong>Email:</strong> {{this.clientEmail}}</p>
-        <p><strong>Fecha:</strong> {{this.date}} - {{this.time}} hs</p>
+        <p><strong>Fecha y Hora:</strong> {{this.date}} - {{this.time}} hs</p>
         <p><strong>Estado:</strong> <span class="badge-active">{{this.status}}</span></p>
-        <p><strong>Servicios asociados:</strong> {{this.services.length}}</p>
+        <div style="margin-top: 10px; padding-top: 5px; border-top: 1px solid #eee;">
+            <strong>Servicios asociados:</strong>
+            <ul>
+                {{#each this.services}}
+                <li>{{this.service.name}} - ${{this.service.price}} (Cant: {{this.quantity}})</li>
+                {{/each}}
+            </ul>
+        </div>
     </div>
     {{/each}}
-</section>
+</div>
+
+<script>
+    const form = document.getElementById('createBookingForm');
+    if (form) {
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const bookingData = {
+                clientName: document.getElementById('clientName').value,
+                clientEmail: document.getElementById('clientEmail').value,
+                date: document.getElementById('date').value,
+                time: document.getElementById('time').value,
+                services: [
+                    {
+                        service: document.getElementById('serviceId').value,
+                        quantity: 1
+                    }
+                ]
+            };
+
+            const response = await fetch('/api/bookings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(bookingData)
+            });
+
+            if (response.ok) {
+                alert('¡Reserva creada con éxito!');
+                window.location.reload();
+            } else {
+                const errorData = await response.json();
+                alert('Error: ' + (errorData.message || 'No se pudo crear la reserva'));
+            }
+        });
+    }
+</script>

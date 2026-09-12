@@ -6,13 +6,14 @@ import {
     updateService,
     deleteService
 } from '../controllers/services.controller.js';
+import { validateBody, serviceSchema } from '../middlewares/validation.middleware.js';
 
 const router = Router();
 
 router.get('/', getServices);
-router.get('/:sid', getServiceById);
-router.post('/', createService);
-router.put('/:sid', updateService);
-router.delete('/:sid', deleteService);
+router.get('/:id', getServiceById);
+router.post('/', validateBody(serviceSchema), createService);
+router.put('/:id', validateBody(serviceSchema.partial()), updateService);
+router.delete('/:id', deleteService);
 
 export default router;

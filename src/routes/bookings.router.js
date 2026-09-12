@@ -1,14 +1,11 @@
 import { Router } from 'express';
-import {
-    createBooking,
-    getBookingById,
-    addServiceToBooking
-} from '../controllers/bookings.controller.js';
+import { getBookings, getBookingById, createBooking } from '../controllers/bookings.controller.js';
+import { validateBody, bookingSchema } from '../middlewares/validation.middleware.js';
 
 const router = Router();
 
-router.post('/', createBooking);
+router.get('/', getBookings);
 router.get('/:bid', getBookingById);
-router.post('/:bid/services/:sid', addServiceToBooking);
+router.post('/', validateBody(bookingSchema), createBooking);
 
 export default router;

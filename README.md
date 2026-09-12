@@ -1,24 +1,22 @@
 # Sistema Backend de Gestión de Turnos y Reservas
 ## Centro Interdisciplinario de Acompañamiento Integral
 
-API REST y Motor de Vistas en Tiempo Real con Node.js, Express, MongoDB Atlas, Handlebars y Socket.io.
+API REST profesional con MongoDB Atlas, Handlebars, Socket.io, Paginación y Validaciones Zod.
 
 ---
 
-## Tecnologías
+##  Endpoints de la API REST
 
-* Node.js & Express.js
-* MongoDB Atlas & Mongoose
-* Handlebars (Renderizado del lado del servidor)
-* Socket.io (Comunicación bidireccional en tiempo real)
-* dotenv
+### Servicios (`/api/services`)
+* `GET /api/services?page=1&limit=5&category=psicologia&sortBy=price&order=asc`: Consulta avanzada con paginación, filtro y ordenamiento.
+* `POST /api/services`: Crea un nuevo servicio (Validado con Zod).
+* `PUT /api/services/:id`: Actualiza un servicio (Validado con Zod).
+
+### Reservas (`/api/bookings`)
+* `GET /api/bookings/:bid`: Obtiene una reserva con datos de servicios completamente **populados** (`populate('services.service')`).
+* `POST /api/bookings`: Crea una reserva (Validado con Zod).
 
 ---
 
-##  Arquitectura y Vistas
-
-`Router -> Controller -> Service -> Repository -> DAO (Mongoose) -> MongoDB Atlas`
-
-### Rutas de Vistas (`/views`)
-* `GET /views/services`: Gestión y creación de servicios en tiempo real con Socket.io.
-* `GET /views/availability`: Consulta de reservas y disponibilidad del centro.
+##  Validaciones (Zod)
+Todos los datos de entrada son procesados por middlewares de Zod cortando el flujo con respuesta `400 Bad Request` ante datos inválidos antes de impactar la base de datos.

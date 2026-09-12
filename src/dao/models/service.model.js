@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import mongoosePaginate from 'mongoose-paginate-v2';
 
 const serviceSchema = new mongoose.Schema(
     {
@@ -9,9 +10,11 @@ const serviceSchema = new mongoose.Schema(
         category: { type: String, required: true },
         available: { type: Boolean, default: true },
         targetAudience: { type: String, default: 'General' },
-        professionals: { type: [String], default: [] }
+        professionals: [{ type: String }]
     },
     { timestamps: true }
 );
 
-export const ServiceModel = mongoose.model('services', serviceSchema);
+serviceSchema.plugin(mongoosePaginate);
+
+export const ServiceModel = mongoose.model('Service', serviceSchema);

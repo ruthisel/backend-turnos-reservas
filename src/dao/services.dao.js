@@ -1,8 +1,18 @@
 import { ServiceModel } from './models/service.model.js';
 
 export class ServicesDAO {
-    async getAll() {
-        return await ServiceModel.find().lean();
+    async getAll(filter = {}, options = {}) {
+        const { page = 1, limit = 10, sortBy = 'createdAt', order = 'asc' } = options;
+        const sortOrder = order === 'desc' ? -1 : 1;
+
+        const paginateOptions = {
+            page: parseInt(page, 10),
+            limit: parseInt(limit, 10),
+            sort: { [sortBy]: sortOrder },
+            lean: true
+        };
+
+        return await ServiceModel.paginate(filter, paginateOptions);
     }
 
     async getById(id) {

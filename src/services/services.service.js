@@ -1,59 +1,31 @@
-import crypto from 'crypto';
-import { ServicesRepository } from '../repositories/services.repository.js';
+import { ServicesDAO } from '../dao/services.dao.js';
+
+const servicesDAO = new ServicesDAO();
 
 export class ServicesService {
-    constructor() {
-        this.servicesRepository = new ServicesRepository();
-    }
+    async getServices(queryParams = {}) {
+        const { category, available, page, limit, sortBy, order } = queryParams;
+        const filter = {};
 
-    async getServices(filters = {}) {
-        let services = await this.servicesRepository.getAll();
+        if (category) filter.category = category;
+        if (available !== undefined) filter.available = available === 'true';
 
-        if (filters.category) {
-            services = services.filter(
-                s => s.category.toLowerCase() === filters.category.toLowerCase()
-            );
-        }
-
-        if (filters.available !== undefined) {
-            const isAvailable = filters.available === 'true';
-            services = services.filter(s => s.available === isAvailable);
-        }
-
-        return services;
+        return await servicesDAO.getAll(filter, { page, limit, sortBy, order });
     }
 
     async getServiceById(id) {
-        return await this.servicesRepository.getById(id);
+        return await servicesDAO.getById(id);
     }
 
-    async createService(serviceData) {
-        const { name, description, duration, price, category, available, targetAudience, professionals } = serviceData;
-
-        if (!name || !description || duration === undefined || price === undefined || !category || available === undefined) {
-            return null;
-        }
-
-        const newService = {
-            id: crypto.randomUUID(),
-            name,
-            description,
-            duration: Number(duration),
-            price: Number(price),
-            category,
-            available: Boolean(available),
-            targetAudience: targetAudience || 'Infancias, Adolescentes y Adultos',
-            professionals: professionals || []
-        };
-
-        return await this.servicesRepository.create(newService);
+    async createService(data) {
+        return await servicesDAO.create(data);
     }
 
-    async updateService(id, updatedData) {
-        return await this.servicesRepository.update(id, updatedData);
+    async updateService(id, data) {
+        return await servicesDAO.update(id, data);
     }
 
     async deleteService(id) {
-        return await this.servicesRepository.delete(id);
+        return await servicesDAO.delete(id);
     }
 }
