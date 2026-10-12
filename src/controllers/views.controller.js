@@ -4,20 +4,21 @@ import { BookingsService } from '../services/bookings.service.js';
 const servicesService = new ServicesService();
 const bookingsService = new BookingsService();
 
-export const renderServices = async (req, res) => {
+export const renderServices = async (req, res, next) => {
     try {
-        const services = await servicesService.getServices();
-        res.render('services', { services });
+        const result = await servicesService.getServices({ limit: 50 });
+        res.render('services', { services: result.docs });
     } catch (error) {
-        res.status(500).send('Error al cargar las vistas de servicios');
+        next(error);
     }
 };
 
-export const renderAvailability = async (req, res) => {
+export const renderAvailability = async (req, res, next) => {
     try {
-        const bookings = await bookingsService.getAllBookings ? await bookingsService.getAllBookings() : [];
-        res.render('availability', { bookings });
+        const bookings = await bookingsService.getAllBookings();
+        const servicesResult = await servicesService.getServices({ limit: 50 });
+        res.render('availability', { bookings, availableServices: servicesResult.docs });
     } catch (error) {
-        res.status(500).send('Error al cargar las vistas de disponibilidad');
+        next(error);
     }
 };

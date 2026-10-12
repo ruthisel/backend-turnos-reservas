@@ -1,22 +1,27 @@
 # Sistema Backend de Gestión de Turnos y Reservas
-## Centro Interdisciplinario de Acompañamiento Integral
+## Centro Interdisciplinario de Acompañamiento Integral — Entrega Final
 
-API REST profesional con MongoDB Atlas, Handlebars, Socket.io, Paginación y Validaciones Zod.
-
----
-
-##  Endpoints de la API REST
-
-### Servicios (`/api/services`)
-* `GET /api/services?page=1&limit=5&category=psicologia&sortBy=price&order=asc`: Consulta avanzada con paginación, filtro y ordenamiento.
-* `POST /api/services`: Crea un nuevo servicio (Validado con Zod).
-* `PUT /api/services/:id`: Actualiza un servicio (Validado con Zod).
-
-### Reservas (`/api/bookings`)
-* `GET /api/bookings/:bid`: Obtiene una reserva con datos de servicios completamente **populados** (`populate('services.service')`).
-* `POST /api/bookings`: Crea una reserva (Validado con Zod).
+API REST profesional con MongoDB Atlas, Handlebars, Socket.io, Paginación, Validaciones Zod y Manejo Centralizado de Errores.
 
 ---
 
-##  Validaciones (Zod)
-Todos los datos de entrada son procesados por middlewares de Zod cortando el flujo con respuesta `400 Bad Request` ante datos inválidos antes de impactar la base de datos.  c
+##  Tecnologías Utilizadas
+* Node.js & Express.js
+* MongoDB Atlas & Mongoose
+* `mongoose-paginate-v2` & Zod
+* Handlebars & Socket.io
+
+---
+
+##  Arquitectura en Capas
+`Routes -> Controllers -> Services -> Repositories -> DAO (Mongoose) -> Models`
+
+---
+
+##  Endpoints Principales
+* `GET /api/services`: Listado con filtros, paginación y ordenamiento.
+* `POST /api/services`: Crea un servicio (Validado con Zod).
+* `GET /api/bookings/:bid`: Consulta reserva con `populate`.
+* `POST /api/bookings`: Crea una reserva asociando servicios por `ObjectId`.
+* `GET /views/services`: Panel en tiempo real con Socket.io.
+* `GET /views/availability`: Panel de reservas con selector dinámico.

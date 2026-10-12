@@ -1,6 +1,6 @@
-import { ServicesDAO } from '../dao/services.dao.js';
+import { ServicesRepository } from '../repositories/services.repository.js';
 
-const servicesDAO = new ServicesDAO();
+const servicesRepository = new ServicesRepository();
 
 export class ServicesService {
     async getServices(queryParams = {}) {
@@ -10,22 +10,22 @@ export class ServicesService {
         if (category) filter.category = category;
         if (available !== undefined) filter.available = available === 'true';
 
-        return await servicesDAO.getAll(filter, { page, limit, sortBy, order });
+        return await servicesRepository.getAll(filter, { page, limit, sortBy, order });
     }
 
     async getServiceById(id) {
-        return await servicesDAO.getById(id);
+        return await servicesRepository.getById(id);
     }
 
     async createService(data) {
-        return await servicesDAO.create(data);
+        return await servicesRepository.create(data);
     }
 
     async updateService(id, data) {
-        return await servicesDAO.update(id, data);
+        return await servicesRepository.update(id, data);
     }
 
     async deleteService(id) {
-        return await servicesDAO.delete(id);
+        return await servicesRepository.delete(id);
     }
 }

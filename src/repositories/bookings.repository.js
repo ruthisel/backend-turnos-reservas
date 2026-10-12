@@ -1,23 +1,21 @@
 import { BookingsDAO } from '../dao/bookings.dao.js';
 
-export class BookingsRepository {
-    constructor() {
-        this.dao = new BookingsDAO();
-    }
+const bookingsDAO = new BookingsDAO();
 
+export class BookingsRepository {
     async getAll() {
-        return await this.dao.getAll();
+        return await bookingsDAO.getAll();
     }
 
     async getById(id) {
-        return await this.dao.getById(id);
+        return await bookingsDAO.getById(id);
     }
 
     async create(data) {
-        return await this.dao.create(data);
+        return await bookingsDAO.create(data);
     }
 
-    async update(id, updatedBooking) {
-        return await this.dao.update(id, updatedBooking);
+    async addServiceToBooking(bookingId, serviceId, quantity) {
+        return await bookingsDAO.addServiceToBooking(bookingId, serviceId, quantity);
     }
 }

@@ -1,27 +1,25 @@
 import { ServicesDAO } from '../dao/services.dao.js';
 
-export class ServicesRepository {
-    constructor() {
-        this.dao = new ServicesDAO();
-    }
+const servicesDAO = new ServicesDAO();
 
-    async getAll() {
-        return await this.dao.getAll();
+export class ServicesRepository {
+    async getAll(filter, options) {
+        return await servicesDAO.getAll(filter, options);
     }
 
     async getById(id) {
-        return await this.dao.getById(id);
+        return await servicesDAO.getById(id);
     }
 
     async create(data) {
-        return await this.dao.create(data);
+        return await servicesDAO.create(data);
     }
 
     async update(id, data) {
-        return await this.dao.update(id, data);
+        return await servicesDAO.update(id, data);
     }
 
     async delete(id) {
-        return await this.dao.delete(id);
+        return await servicesDAO.delete(id);
     }
 }

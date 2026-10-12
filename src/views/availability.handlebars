@@ -7,14 +7,24 @@
         <input type="email" id="clientEmail" placeholder="Correo electrónico" required />
         <input type="date" id="date" required />
         <input type="time" id="time" required />
-        <input type="text" id="serviceId" placeholder="ID del Servicio (ObjectId de Mongo)" required />
+
+        <label for="serviceId" style="display:block; margin-bottom: 0.5rem; font-weight: bold;">Seleccionar
+            Servicio:</label>
+        <select id="serviceId" required
+            style="display: block; width: 100%; margin-bottom: 0.8rem; padding: 0.6rem; border: 1px solid #ccc; border-radius: 4px;">
+            <option value="" disabled selected>-- Seleccionar un servicio --</option>
+            {{#each availableServices}}
+            <option value="{{this._id}}">{{this.name}} - ${{this.price}} ({{this.category}})</option>
+            {{/each}}
+        </select>
+
         <button type="submit">Crear Reserva</button>
     </form>
 </section>
 
 <hr />
 
-<h3>Listado de Reservas</h3>
+<h3>Listado de Reservas Registradas</h3>
 <div class="grid-container">
     {{#each bookings}}
     <div class="card">
